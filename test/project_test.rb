@@ -18,4 +18,9 @@ class ProjectTest < Test::Unit::TestCase
     project = Project.new(:nova_atchmrg, :NOVA_ATCHMRG)
     assert_equal 'LOCAL:NOVA_ATCHMRG@hesz04.internal.houstonenergyinc.com:/apps/geoframe/geoframe_44_sun/bin/ctsrvr_init.csh', project.bulk_server_command
   end
+
+  def test_super_server_command
+    project = Project.new(:nova_atchmrg, :NOVA_ATCHMRG)
+    assert_equal 'LOCAL:hesz04.internal.houstonenergyinc.com:/apps/geoframe/geoframe_44_sun/bin/apu_superserver_init.csh', project.super_server_command
+  end
 end

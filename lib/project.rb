@@ -16,4 +16,10 @@ class Project
         .first[:value_string]
     end
   end
+
+  def super_server_command
+    Sequel.connect("oracle://#{@account}:tigers@gfprod") do |db|
+      db[:project].select(:super_server_command).first[:super_server_command]
+    end
+  end
 end
