@@ -17,4 +17,8 @@ class CatalogTest < Test::Unit::TestCase
     ENV['BASELINE_ACC'] = nil
     assert_raises(RuntimeError) { Catalog.new }
   end
+
+  def test_projects
+    assert_equal 357, @catalog.projects.count
+  end
 end
