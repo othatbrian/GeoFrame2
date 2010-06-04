@@ -19,26 +19,7 @@ class Project
   end
 
   def connect
-    @db = _connect_with_supplied_password
-    begin
-      @db if @db.test_connection
-    rescue Sequel::DatabaseConnectionError => error
-      if @password.downcase != @name.downcase
-        @db = _connect_with_default_password
-        begin
-          @db if @db.test_connection
-        rescue Sequel::DatabaseConnectionError => error
-          raise error
-        end
-      end
-#      if ENV[:GFDBA_PASSWORD] do
-#        Open3.popen3("proj_get_password #{@name} bogus") do |stdin, stdout, stderr|
-#          errors = stderr.read
-#          stdout.read =~ /^Password =(.*)$/m
-#        @db = Sequel.connect("oracle://#{@account}:#{ENV[:GFDBA_PASSWORD]}@#{ENV[:TWO_TASK]}")
-#      else
-#        raise "ERROR: project or password incorrect and GFDBA_PASSWORD not set!"
-    end
+    @db = @password ? _connect_with_supplied_password : _connect_with_default_password
   end
 
   def super_server_command
