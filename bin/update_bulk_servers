@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require File.dirname(__FILE__) + '/../lib/catalog'
+require File.dirname(__FILE__) + '/../lib/project'
+
+Catalog.new.projects.each do |project|
+	new_command = "LOCAL:#{project.account}@hesz04.internal.houstonenergyinc.com:/apps/geoframe/geoframe_45_sun/bin/ctsrvr_init.csh"
+#	begin
+		project.password = :tigers
+		project.connect
+		puts "Setting bulk server on #{project.name} to #{new_command}"
+		project.bulk_server_command = new_command
+		project.disconnect
+#	rescue
+#		STDERR.puts "Puking on #{project.name}"
+#	end
+end

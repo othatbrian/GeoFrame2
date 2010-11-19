@@ -28,6 +28,17 @@ class Project
 		end
 	end
 
+	def bulk_server_command=(new_command)
+		begin
+		@db[:parameter][:code => 'Bulk_Server_Command'] =
+			{:value_string => new_command}
+		rescue
+			connect
+			@db[:parameter][:code => 'Bulk_Server_Command'] = 
+				{:value_string => new_command}
+		end
+	end
+
 	def connect
 		@db = @password ? _connect_with_supplied_password : _connect_with_default_password
 		@db.test_connection or raise "oops!"
@@ -47,6 +58,15 @@ class Project
 			@db[:project]
 				.select(:super_server_command)
 				.first[:super_server_command]
+		end
+	end
+
+	def super_server_command=(new_command)
+		begin
+			@db[:project].update(:super_server_command => new_command)
+		rescue
+			connect
+			@db[:project].update(:super_server_command => new_command)
 		end
 	end
 
