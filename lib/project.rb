@@ -15,27 +15,54 @@ class Project
 
 	def bulk_server_command
 		begin
-		@db[:parameter]
+		rows = @db[:parameter]
 			.select(:value_string)
 			.where(:code => 'Bulk_Server_Command')
-			.first[:value_string]
 		rescue
 			connect
-			@db[:parameter]
+			rows = @db[:parameter]
 				.select(:value_string)
 				.where(:code => 'Bulk_Server_Command')
-				.first[:value_string]
 		end
+		rows.first ? rows.first[:value_string] : nil
 	end
 
 	def bulk_server_command=(new_command)
 		begin
-		@db[:parameter][:code => 'Bulk_Server_Command'] =
-			{:value_string => new_command}
+			if new_command
+				if (row = @db[:parameter]
+					.select(:value_string)
+					.where(:code => 'Bulk_Server_Command')
+					.first)
+				then
+					row.update(:value_string => new_command)
+				else
+					puts "Unwilling to create new Bulk_Server_Command for #{name}"
+				end
+			else
+				@db[:parameter]
+					.select(:value_string)
+					.where(:code => 'Bulk_Server_Command')
+					.delete
+			end
 		rescue
 			connect
-			@db[:parameter][:code => 'Bulk_Server_Command'] = 
-				{:value_string => new_command}
+			if new_command
+				if (row = @db[:parameter]
+					.select(:value_string)
+					.where(:code => 'Bulk_Server_Command')
+					.first)
+				then
+					row.update(:value_string => new_command)
+				else
+					puts "Unwilling to create new Bulk_Server_Command for #{name}"
+				end
+			else
+				@db[:parameter]
+					.select(:value_string)
+					.where(:code => 'Bulk_Server_Command')
+					.delete
+			end
 		end
 	end
 
@@ -50,15 +77,12 @@ class Project
 
 	def super_server_command
 		begin
-			@db[:project]
-				.select(:super_server_command)
-				.first[:super_server_command]
+			rows = @db[:project].select(:super_server_command)
 		rescue
 			connect
-			@db[:project]
-				.select(:super_server_command)
-				.first[:super_server_command]
+			rows = @db[:project].select(:super_server_command)
 		end
+		rows.first ? rows.first[:super_server_command] : nil
 	end
 
 	def super_server_command=(new_command)
