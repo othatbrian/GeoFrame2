@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require File.dirname(__FILE__) + '/../lib/catalog'
+require File.dirname(__FILE__) + '/../lib/project'
+
+Catalog.new.projects.each do |project|
+#	begin
+		project.password = :tigers
+		project.connect
+		puts [project.name, project.bulk_server_command].join(': ')
+		project.disconnect
+#	rescue
+#		STDERR.puts "Puking on #{project.name}"
+#	end
+end
