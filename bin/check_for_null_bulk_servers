@@ -4,12 +4,12 @@ require File.dirname(__FILE__) + '/../lib/catalog'
 require File.dirname(__FILE__) + '/../lib/project'
 
 Catalog.new.projects.each do |project|
-#	begin
+	begin
 		project.password = :tigers
 		project.connect
 		project.bulk_server_command or puts project.name
 		project.disconnect
-#	rescue
-#		STDERR.puts "Puking on #{project.name}"
-#	end
+	rescue
+		STDERR.puts "Puking on #{project.name}"
+	end
 end
